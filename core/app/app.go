@@ -1,11 +1,11 @@
 package app
 
 import (
+	"github.com/gin-gonic/gin"
 	"reminder/core"
 	"reminder/core/service"
 	"reminder/registry"
 	"reminder/router"
-	"github.com/gin-gonic/gin"
 )
 
 type App struct {
@@ -31,12 +31,11 @@ func (app *App) Init() {
 	router.RegisterGraphQLRouter(app.context)
 	server := core.GetContext().Server
 
-
 	setupGraphQLUI(server)
 
 }
 
 func (app *App) Run() {
 	server := app.context.Server
-	server.Run(":8080")
+	server.Run(":9080")
 }

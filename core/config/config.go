@@ -37,6 +37,7 @@ func NewConfig() AppConfig {
 			"DB_PORT": os.Getenv("DB_PORT"),
 			"APP_DEBUG": os.Getenv("APP_DEBUG"),
 			"SECRET_JWT": os.Getenv("SECRET_JWT"),
+			"PORT": os.Getenv("PORT"),
 		},
 	}
 }

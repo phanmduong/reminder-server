@@ -17,7 +17,7 @@ type UserFb struct {
 	ID    string `json:"id"`
 }
 
-var getProfileFacebook = func(faceID string, token string) (model.User) {
+var getProfileFacebook = func(faceID string, token string) (model.User, error) {
 	var myClient = &http.Client{Timeout: 10 * time.Second}
 	data := UserFb{}
 	user := model.User{}
@@ -36,7 +36,7 @@ var getProfileFacebook = func(faceID string, token string) (model.User) {
 	user.Name = data.Name
 	user.Email = data.Email
 	user.AvatarURL = "https://graph.facebook.com/" + faceID + "/picture??height=500&width=500"
-	return user
+	return user, err
 }
 
 var Login = &graphql.Field{
@@ -56,13 +56,16 @@ var Login = &graphql.Field{
 	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 		db := service.GetService().DB.DB
 
-		var user model.User
+		//var user model.User
 		token, ok := p.Args["token"].(string)
 		fb_id, ok := p.Args["fb_id"].(string)
 
 		if ok {
 			//db.Where("fb_id = ?", fb_id).First(&user)
-			user = getProfileFacebook(fb_id, token)
+			user, error := getProfileFacebook(fb_id, token);
+			if error != nil {
+				return nil, error
+			}
 			db.Where(model.User{FbID: user.FbID}).FirstOrCreate(&user, model.User{FbID: user.FbID})
 			token, err := jwt.CreateJWT(&user)
 
@@ -71,11 +74,11 @@ var Login = &graphql.Field{
 			return token, err
 		}
 
-		google_id, ok := p.Args["google_id"].(int)
-		if ok {
-			db.Where("google_id = ?", google_id).First(&user)
-			return user, nil
-		}
+		//google_id, ok := p.Args["google_id"].(int)
+		//if ok {
+		//	db.Where("google_id = ?", google_id).First(&user)
+		//	return user, nil
+		//}
 		return nil, nil
 	},
 }
