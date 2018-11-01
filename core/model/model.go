@@ -2,11 +2,13 @@ package model
 
 import (
 	"time"
-	)
+)
 
 type Model struct {
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID        uint       `gorm:"primary_key" json:"id"`
+	CreatedAt time.Time  `json:"created_at"`
+	UpdatedAt time.Time  `json:"updated_at"`
+	DeletedAt *time.Time `sql:"index" json:"deleted_at"`
 
 	//ignore field in gorm
 	Args map[string]interface{} `gorm:"-"` // Args	in graphql

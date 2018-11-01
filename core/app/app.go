@@ -23,7 +23,9 @@ func NewApp() *App {
 
 func setupGraphQLUI(server *gin.Engine) {
 	server.Static("/graphqlui", "./public/graphqlui")
+	server.Static("/othello", "./public/othello")
 	server.Static("/static", "./public/graphqlui/static")
+	server.Static("/static1", "./public/othello/static1")
 }
 
 func (app *App) Init() {

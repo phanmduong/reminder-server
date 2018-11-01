@@ -10,6 +10,7 @@ var RootMutation = graphql.NewObject(
 		Name: "Mutation",
 		Fields: graphql.Fields{
 			"login": field.Login,
+			"group": field.MutationGroup,
 		},
 	},
 )

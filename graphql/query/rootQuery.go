@@ -9,8 +9,8 @@ var RootQuery = graphql.NewObject(
 	graphql.ObjectConfig{
 		Name: "Query",
 		Fields: graphql.Fields{
-			"user": field.FieldUser,
-			"users": field.FieldUsers,
+			"user":   field.FieldUser,
+			"groups": field.FieldGroups,
 		},
 	},
 )

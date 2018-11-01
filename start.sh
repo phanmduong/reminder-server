@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SERVER_PORT=8080
+SERVER_PORT=9080
 WATCH_SERVER_PORT=8000
 
 open http://localhost:$WATCH_SERVER_PORT

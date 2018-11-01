@@ -6,7 +6,7 @@ import (
 
 var LoginType = graphql.NewObject(
 	graphql.ObjectConfig{
-		Name: "User",
+		Name: "Login",
 		Fields: graphql.Fields{
 			"token": &graphql.Field{
 				Type: graphql.String,

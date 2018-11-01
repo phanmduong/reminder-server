@@ -69,8 +69,6 @@ var Login = &graphql.Field{
 			db.Where(model.User{FbID: user.FbID}).FirstOrCreate(&user, model.User{FbID: user.FbID})
 			token, err := jwt.CreateJWT(&user)
 
-			//jwt.ParseJWT("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7IklEIjo0LCJDcmVhdGVkQXQiOiIyMDE4LTEwLTI0VDIzOjU0OjU2KzA3OjAwIiwiVXBkYXRlZEF0IjoiMjAxOC0xMC0yNFQyMzo1NDo1NiswNzowMCIsIkRlbGV0ZWRBdCI6bnVsbCwibmFtZSI6IlBoYW4gTSBExrDGoW5nIiwiZW1haWwiOiJwaGFubWluaGR1b25nQGhvdG1haWwuY29tIiwiZmJfaWQiOiIxMTA1NTIxNTg2Mjg4NzQ5IiwiZ29vZ2xlX2lkIjoiIiwiYXZhdGFyX3VybCI6Imh0dHBzOi8vZ3JhcGguZmFjZWJvb2suY29tLzExMDU1MjE1ODYyODg3NDkvcGljdHVyZT90eXBlPWxhcmdlIn0sImV4cCI6MTAwODB9.XBg2NUzc8FuaE-NZAUdKStnSP22WkRvLDUlvRQ4M1Ec", &user)
-
 			return token, err
 		}
 
