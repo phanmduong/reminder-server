@@ -11,6 +11,7 @@ var RootQuery = graphql.NewObject(
 		Fields: graphql.Fields{
 			"user":   field.FieldUser,
 			"groups": field.FieldGroups,
+			"todoLists": field.FieldTodoLists,
 		},
 	},
 )

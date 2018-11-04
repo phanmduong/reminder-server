@@ -9,28 +9,28 @@ import (
 	"reminder/model"
 )
 
-var FieldGroup = &graphql.Field{
-	Type:        gqltype.GroupType,
-	Description: "Get group by id",
-	Args: graphql.FieldConfigArgument{
-		"token": &graphql.ArgumentConfig{
-			Type: graphql.String,
-		},
-	},
-	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-
-		token, ok := p.Args["token"].(string)
-		fmt.Println(token)
-		if ok {
-			isValid, _ := authorize.CheckAuthorization(token)
-			if isValid {
-				return nil, nil
-			}
-		}
-
-		return nil, nil
-	},
-}
+//var FieldGroup = &graphql.Field{
+//	Type:        gqltype.GroupType,
+//	Description: "Get group by id",
+//	Args: graphql.FieldConfigArgument{
+//		"token": &graphql.ArgumentConfig{
+//			Type: graphql.String,
+//		},
+//	},
+//	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+//
+//		token, ok := p.Args["token"].(string)
+//		fmt.Println(token)
+//		if ok {
+//			isValid, _ := authorize.CheckAuthorization(token)
+//			if isValid {
+//				return nil, nil
+//			}
+//		}
+//
+//		return nil, nil
+//	},
+//}
 
 var FieldGroups = &graphql.Field{
 	Type:        graphql.NewList(gqltype.GroupType),

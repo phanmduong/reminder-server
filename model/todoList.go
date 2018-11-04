@@ -1,15 +1,19 @@
 package model
 
-import "reminder/core/model"
+import (
+	"reminder/core/model"
+	"time"
+)
 
 // Table name default is the pluralized version of struct
 type TodoList struct {
 	model.Model
-	Name    string `json:"name"`
-	Note    string `json:"note"`
-	Status  string `json:"status"`
-	Group   Group
-	GroupID int
+	Name     string     `json:"name"`
+	Note     string     `json:"note"`
+	Status   int        `json:"status"`
+	Deadline *time.Time `json:"deadline"`
+	Group    Group
+	GroupID  uint
 }
 
 func (b TodoList) TableName() string {
