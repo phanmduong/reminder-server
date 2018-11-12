@@ -13,6 +13,8 @@ var RootMutation = graphql.NewObject(
 			"group":                field.MutationGroup,
 			"todoList":             field.MutationTodoList,
 			"changeStatusTodoList": field.MutationChangeStatusTodoList,
+			"deleteGroup":          field.MutationDeleteGroup,
+			"deleteTodoList":          field.MutationDeleteTodoList,
 		},
 	},
 )

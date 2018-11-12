@@ -48,11 +48,16 @@ var FieldTodoLists = &graphql.Field{
 		db := service.GetService().DB.DB
 		token, ok := p.Args["token"].(string)
 		groupID, ok1 := p.Args["group_id"].(int)
-		fmt.Println(token)
+		fmt.Println(groupID)
 		var todoLists []model.TodoList
 		if ok {
 			isValid, _ := authorize.CheckAuthorization(token)
 			if isValid && ok1 {
+				if groupID == -1 {
+					db.Debug().Where("DATE(deadline) = DATE(NOW())").Order("created_at asc").Find(&todoLists)
+					return todoLists, nil
+				}
+
 				db.Where("group_id = ?", groupID).Order("created_at asc").Find(&todoLists)
 				return todoLists, nil
 			} else {
@@ -80,6 +85,9 @@ var MutationTodoList = &graphql.Field{
 		"deadline": &graphql.ArgumentConfig{
 			Type: graphql.String,
 		},
+		"image": &graphql.ArgumentConfig{
+			Type: graphql.String,
+		},
 		"id": &graphql.ArgumentConfig{
 			Type: graphql.Int,
 		},
@@ -92,20 +100,21 @@ var MutationTodoList = &graphql.Field{
 		token, ok := p.Args["token"].(string)
 		name, ok1 := p.Args["name"].(string)
 		note, ok1 := p.Args["note"].(string)
+		image, _ := p.Args["image"].(string)
 		deadline, okDeadline := p.Args["deadline"].(string)
-		id, ok2 := p.Args["id"].(uint)
-		group_id, ok1 := p.Args["group_id"].(int)
-		fmt.Println(deadline);
+		id, ok2 := p.Args["id"].(int)
+		group_id, _ := p.Args["group_id"].(int)
+		groupID := uint(group_id)
 		if ok && ok1 {
 			isValid, _ := authorize.CheckAuthorization(token)
 			if isValid {
-				var todoList = model.TodoList{Name: name, Note: note, GroupID: uint(group_id)}
+				var todoList = model.TodoList{Name: name, Note: note, GroupID: &groupID, Image: &image}
 				if (okDeadline) {
 					timeDeadline, _ := time.Parse(time.RFC3339, deadline)
-					todoList.Deadline = &timeDeadline;
+					todoList.Deadline = &timeDeadline
 				}
 				if ok2 {
-					todoList.ID = id
+					todoList.ID = uint(id)
 					db.Debug().Save(&todoList)
 				} else {
 					db.Debug().Create(&todoList)
@@ -153,6 +162,35 @@ var MutationChangeStatusTodoList = &graphql.Field{
 
 				return todoList, nil
 
+			} else {
+				return nil, nil
+			}
+		}
+
+		return nil, nil
+	},
+}
+
+var MutationDeleteTodoList = &graphql.Field{
+	Type:        gqltype.TodoListType,
+	Description: "delete todo list",
+	Args: graphql.FieldConfigArgument{
+		"token": &graphql.ArgumentConfig{
+			Type: graphql.String,
+		},
+		"id": &graphql.ArgumentConfig{
+			Type: graphql.Int,
+		},
+	},
+	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+		db := service.GetService().DB.DB
+		token, ok := p.Args["token"].(string)
+		id, ok1 := p.Args["id"].(int)
+		if ok && ok1 {
+			isValid, _ := authorize.CheckAuthorization(token)
+			if isValid {
+				db.Debug().Where("id = ?", id).Delete(&model.TodoList{})
+				return nil, nil
 			} else {
 				return nil, nil
 			}

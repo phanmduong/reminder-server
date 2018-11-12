@@ -12,8 +12,9 @@ type TodoList struct {
 	Note     string     `json:"note"`
 	Status   int        `json:"status"`
 	Deadline *time.Time `json:"deadline"`
+	Image    *string    `json:"image"`
 	Group    Group
-	GroupID  uint
+	GroupID  *uint
 }
 
 func (b TodoList) TableName() string {

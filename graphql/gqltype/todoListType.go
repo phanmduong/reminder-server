@@ -3,6 +3,7 @@ package gqltype
 import (
 	"github.com/graphql-go/graphql"
 	"reminder/model"
+	"time"
 )
 
 var TodoListType = graphql.NewObject(
@@ -21,11 +22,21 @@ var TodoListType = graphql.NewObject(
 			"note": &graphql.Field{
 				Type: graphql.String,
 			},
+			"image": &graphql.Field{
+				Type: graphql.String,
+			},
 			"status": &graphql.Field{
 				Type: graphql.Int,
 			},
 			"deadline": &graphql.Field{
-				Type: graphql.DateTime,
+				Type: graphql.String,
+				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+					deadline := p.Source.(model.TodoList).Deadline
+					if deadline == nil {
+						return nil, nil
+					}
+					return deadline.Format(time.RFC3339), nil
+				},
 			},
 		},
 	},
